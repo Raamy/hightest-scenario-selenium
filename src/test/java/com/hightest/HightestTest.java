@@ -1,11 +1,12 @@
 package com.hightest;
 
+import org.junit.Before;
+import org.junit.After;
+import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-
-import java.time.Duration;
 
 // Tests de la page Hightest (Page d'accueil)
 public class HightestTest {
@@ -14,15 +15,17 @@ public class HightestTest {
     String start_url = "https://hightest.nc/";
     WebDriver driver;
 
-    public HightestTest() {
+
+    @Before
+    public void setUp(){
         // On initialise le driver
-        this.driver = new ChromeDriver();
+        driver = new ChromeDriver();
 
         // Bloc try/catch : On essaye d'accéder au site correspondant à l'url de départ
         // Si ce n'est pas le cas, on retourne l'erreur
         try {
 
-            driver.get(this.start_url);
+            driver.get(start_url);
             // Taille de la fenêtre changée arbitrairement pour des raisons pratiques
             driver.manage().window().maximize();
         } catch (Exception err) {
@@ -31,6 +34,11 @@ public class HightestTest {
             throw err;
         }
     }
+
+    //@After
+    //public void tearDown() {
+    //    driver.quit();
+    //}
 
     // Test : Scenario Exercice Selenium
     // Intéraction avec les différentes classes (pages) afin de réaliser le scénario
@@ -47,7 +55,7 @@ public class HightestTest {
         Toolbox toolbox = hightest.goToToolboxPage();
 
         // On initialise un objet Istqb (Page de test du site Istqb)
-        // avec la méthode goToToolboxPage de la classe Toolbox
+        // avec la méthode goToToolboxPage de la classe Toolbox, puis on répond au quiz
         Istqb istqb = toolbox.goToIstqbFoundationFrenchQuiz();
         istqb.answerTest(email);
 
@@ -55,6 +63,9 @@ public class HightestTest {
         // On utilise la méthode goToMailbox pour se rendre sur la boite de réception, où se trouve le mail des résultats
         Yopmail yopmail = istqb.goToYopmail();
         yopmail.goToMailbox(email);
+
+        // On vérifie qu'on se trouve bien la boiîte de réception
+        Assertions.assertEquals(yopmail.driver.getTitle(), "Boite de réception");
 
         System.out.println("Fin du test : Scenario Exercice Selenium");
     }

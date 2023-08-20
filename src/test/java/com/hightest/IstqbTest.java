@@ -1,7 +1,9 @@
 package com.hightest;
 
+import org.junit.Before;
+import org.junit.After;
+import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
@@ -10,15 +12,16 @@ public class IstqbTest {
 
     String start_url = "https://hightest.nc/ressources/test-istqb.php";
 
-    public IstqbTest() {
+    @Before
+    public void setUp(){
         // On initialise le driver
-        this.driver = new ChromeDriver();
+        driver = new ChromeDriver();
 
         // Bloc try/catch : On essaye d'accéder au site correspondant à l'url de départ
         // Si ce n'est pas le cas, on retourne l'erreur
         try {
 
-            driver.get(this.start_url);
+            driver.get(start_url);
             // Taille de la fenêtre changée arbitrairement pour des raisons pratiques
             driver.manage().window().maximize();
         } catch (Exception err) {
@@ -26,6 +29,11 @@ public class IstqbTest {
             System.out.println("Erreur lors de l'accès au site : " + err.getMessage());
             throw err;
         }
+    }
+
+    @After
+    public void tearDown() {
+        driver.quit();
     }
 
     // Réponds correctement au test, puis envoie les réponses par mail
