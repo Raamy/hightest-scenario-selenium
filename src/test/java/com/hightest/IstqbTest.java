@@ -51,11 +51,13 @@ public class IstqbTest {
     // Aller à la page de Yopmail
     @Test
     public void goToYopmail() {
-        // On initialise un objet Hightest (Page d'accueil du site)
+        // On initialise un objet Istqb (Page d'accueil du site)
         Istqb istqb = new Istqb(this.driver);
 
+        // On crée un objet Yopmail avec la méthode goToYopmail
         Yopmail yopmail = istqb.goToYopmail();
 
+        // On vérifie que les titres correspondent
         Assertions.assertEquals(yopmail.driver.getTitle(), "YOPmail : Email jetable - Boîte de réception temporaire et anonyme");
     }
 
