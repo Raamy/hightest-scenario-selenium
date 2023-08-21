@@ -64,8 +64,8 @@ public class HightestTest {
         Yopmail yopmail = istqb.goToYopmail();
         yopmail.goToMailbox(email);
 
-        // On vérifie qu'on se trouve bien la boiîte de réception
-        Assertions.assertEquals(yopmail.driver.getTitle(), "Boite de réception");
+        // On vérifie que le mail contient bien les résultats à 100%
+        Assertions.assertTrue(yopmail.resultsMessage.contains("20 question(s) sur 20, soit 100 % de réussite."));
 
         System.out.println("Fin du test : Scenario Exercice Selenium");
     }

@@ -2,6 +2,7 @@ package com.hightest;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -20,8 +21,13 @@ public class Yopmail {
     // Résultats contenu dans le mail
     By results = By.cssSelector("div:nth-child(2) > div:nth-child(1)");
 
+    // Contenu de mail
+    String resultsMessage;
     // Bouton des cookie obligatoire
     By cookieButton = By.id("necesary");
+
+    // Balise iframe qui contient le mail
+    By mailContent = By.cssSelector("#ifmail");
 
 
     public Yopmail(WebDriver driver) {
@@ -52,6 +58,13 @@ public class Yopmail {
             driver.findElement(loginInput).click();
             driver.findElement(loginInput).sendKeys(email);
             driver.findElement(loginButton).click();
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(2));
+            wait.until(ExpectedConditions.titleIs("Boite de réception"));
+            // Le contenu du mail se trouve dans un élément iframe
+            // on doit donc créer un objet WebElement de cet iframe pour obtenir le contenu du mail
+            WebElement iframe = driver.findElement(this.mailContent);
+            driver.switchTo().frame(iframe);
+            resultsMessage = driver.findElement(results).getText();
         } catch (Exception err) {
             System.out.println("Erreur lors de l'accès à la boîte de réception : ");
             throw err;
